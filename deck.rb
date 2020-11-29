@@ -4,14 +4,21 @@ require_relative 'card'
 class Deck
   attr_reader :deck
 
+  SUIT = '+,<3,^,<>'.split(',')
+  VALUES = '2,3,4,5,6,7,8,9,10,J,Q,K,A'.split(',')
+
   def initialize
     @deck = []
-    '2,3,4,5,6,7,8,9,10,J,Q,K,A'.split(',').product('+,<3,^,<>'.split(',')) { |el| @deck << Card.new(el) }
+    generate
     shuffle
   end
 
+  def generate
+    VALUES.product(SUIT) { |el| @deck << Card.new(el) }
+  end
+
   def shuffle
-    @deck.sort_by! { rand }
+    @deck.shuffle!
   end
 
   def take_card

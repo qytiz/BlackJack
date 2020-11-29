@@ -2,10 +2,10 @@
 
 require_relative 'deck'
 require_relative 'logic'
+require_relative 'hand'
+require_relative 'card'
 
 class UI
-  def initialize; end
-
   def start
     puts 'Введите имя:'
     name = gets.chomp
@@ -14,37 +14,23 @@ class UI
   end
 
   def menu
-    puts "У вас в банке #{@game.players[0].money}, у диллера #{@game.players[1].money}, в банке 20"
-    print 'У вас в руке: '
-    @game.players[0].hand.each { |card| print "#{card.name} " }
-    puts ", общая сумма #{@game.players[0].cards_value}"
-    print 'У диллера в руке '
-    @game.players[1].hand.each { print ' **' }
+    info_list
     puts ' '
-    puts 'Возможные действия:'
-    puts '1.Пропустить ход'
-    puts '2.Добавить карту' if @game.players[0].hand.length == 2
-    puts '3.Вскрыть карты'
-    puts '0.Выход'
+    action_list
     choose = gets.chomp.to_i
-    if @game.players[0].hand.length == 2 && choose == 2
+    if @game.players[0].hand.too_much? && choose == 2
       @game.add_card
     else
       case choose
       when 1
         @game.skip
       when 3
-        print 'Ваши карты:'
-        @game.players[0].hand.each { |card| print "#{card.name} " }
-        puts ", общая сумма #{@game.players[0].cards_value}"
-        print 'Карты диллера:'
-        @game.players[1].hand.each { |card| print "#{card.name} " }
-        puts ", общая сумма #{@game.players[1].cards_value}"
-        puts @game.open_cards
+        open_cards
       when 0
         abort
       end
     end
+
     if @game.game_over
       game_over
     else
@@ -63,6 +49,33 @@ class UI
     when 0
       abort
     end
+  end
+
+  def info_list
+    puts "У вас в банке #{@game.players[0].money}, у диллера #{@game.players[1].money}, в банке 20"
+    print 'У вас в руке: '
+    @game.players[0].hand.cards.each { |card| print "#{card.name} " }
+    puts ", общая сумма #{@game.players[0].hand.count_cards}"
+    print 'У диллера в руке '
+    @game.players[1].hand.cards.each { print ' **' }
+  end
+
+  def action_list
+    puts 'Возможные действия:'
+    puts '1.Пропустить ход'
+    puts '2.Добавить карту' if @game.players[0].hand.too_much?
+    puts '3.Вскрыть карты'
+    puts '0.Выход'
+  end
+
+  def open_cards
+    print 'Ваши карты:'
+    @game.players[0].hand.cards.each { |card| print "#{card.name} " }
+    puts ", общая сумма #{@game.players[0].hand.count_cards}"
+    print 'Карты диллера:'
+    @game.players[1].hand.cards.each { |card| print "#{card.name} " }
+    puts ", общая сумма #{@game.players[1].hand.count_cards}"
+    puts @game.open_cards
   end
 end
 
