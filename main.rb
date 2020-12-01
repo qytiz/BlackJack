@@ -79,7 +79,6 @@ class UI
       abort
     end
   end
-  
 end
 
 ui = UI.new

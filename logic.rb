@@ -70,7 +70,7 @@ class Game
   end
 
   def open_cards
-    @res=''
+    @res = ''
     @player_turn = true
     if (@players[0].hand.count_cards > 21 || @players[0].hand.count_cards < @players[1].hand.count_cards) && @players[1].hand.count_cards < 22
       winner(@players[1])
@@ -83,12 +83,12 @@ class Game
         winner(@players[0])
       end
     end
-        end_game
+    end_game
     unless @game_over
       @players[0].hand.cards.clear
       @players[1].hand.cards.clear
       start_game
-      return @res
+      @res
     end
   end
 
@@ -100,11 +100,11 @@ class Game
   def end_game
     if @players[0].money < 10
       @game_over = true
-      @res+= 'У вас закончились деньги'
+      @res += 'У вас закончились деньги'
     else
       if @players[1].money < 10
         @game_over = true
-        @res+= ' У диллера закончились деньги'
+        @res += ' У диллера закончились деньги'
       end
     end
   end

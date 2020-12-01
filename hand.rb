@@ -31,7 +31,7 @@ class Hand
         cards_value += card.value
       end
     end
-    while a > 0
+    while a.positive?
       if cards_value > 21
         a -= 1
         cards_value -= 10
