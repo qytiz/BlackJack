@@ -20,23 +20,26 @@ class Hand
     cards_value = 0
     a = 0
     @cards.each do |card|
-      if card.value != 11
-        cards_value += card.value
+      if card.value =~ /[J,Q,A,K]/
+        if card.value != 'A'
+          cards_value += 10
+        else
+          cards_value += 10
+          a += 1
+        end
       else
-        a += 1
+        cards_value += card.value
       end
     end
-    a.times do
-      cards_value += if cards_value + 11 > 21
-                       1
-                     else
-                       if 21 - (cards_value + 1) < 21 - (cards_value + 11)
-                         1
-                       else
-                         11
-                       end
-                     end
+    while a > 0
+      if cards_value > 21
+        a -= 1
+        cards_value -= 10
+      else
+        a = 0
+      end
     end
+
     cards_value
   end
 end

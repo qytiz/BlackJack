@@ -4,8 +4,8 @@ require_relative 'card'
 class Deck
   attr_reader :deck
 
-  SUIT = '+,<3,^,<>'.split(',')
-  VALUES = '2,3,4,5,6,7,8,9,10,J,Q,K,A'.split(',')
+  SUITS = ['+', '<3', '^', '<>'].freeze
+  VALUES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'].freeze
 
   def initialize
     @deck = []
@@ -14,7 +14,9 @@ class Deck
   end
 
   def generate
-    VALUES.product(SUIT) { |el| @deck << Card.new(el) }
+    SUITS.each do |suit|
+      VALUES.each { |value| @deck << Card.new(suit, value) }
+    end
   end
 
   def shuffle

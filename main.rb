@@ -38,23 +38,12 @@ class UI
     end
   end
 
-  def game_over
-    puts '1.Начать заного'
-    puts '0.Выйти'
-
-    case gets.chomp
-    when 1
-      @game = nil
-      start
-    when 0
-      abort
-    end
-  end
+  private
 
   def info_list
     puts "У вас в банке #{@game.players[0].money}, у диллера #{@game.players[1].money}, в банке 20"
     print 'У вас в руке: '
-    @game.players[0].hand.cards.each { |card| print "#{card.name} " }
+    @game.players[0].hand.cards.each { |card| print "#{card.value}#{card.suit}  " }
     puts ", общая сумма #{@game.players[0].hand.count_cards}"
     print 'У диллера в руке '
     @game.players[1].hand.cards.each { print ' **' }
@@ -70,13 +59,27 @@ class UI
 
   def open_cards
     print 'Ваши карты:'
-    @game.players[0].hand.cards.each { |card| print "#{card.name} " }
+    @game.players[0].hand.cards.each { |card| print "#{card.value}#{card.suit} " }
     puts ", общая сумма #{@game.players[0].hand.count_cards}"
     print 'Карты диллера:'
-    @game.players[1].hand.cards.each { |card| print "#{card.name} " }
+    @game.players[1].hand.cards.each { |card| print "#{card.value} #{card.suit}  " }
     puts ", общая сумма #{@game.players[1].hand.count_cards}"
     puts @game.open_cards
   end
+
+  def game_over
+    puts '1.Начать заного'
+    puts '0.Выйти'
+
+    case gets.chomp
+    when 1
+      @game = nil
+      start
+    when 0
+      abort
+    end
+  end
+  
 end
 
 ui = UI.new
