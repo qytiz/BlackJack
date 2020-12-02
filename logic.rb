@@ -71,7 +71,7 @@ class Game
 
   def open_cards
     @res = ''
-   
+
     if (@players[0].hand.count_cards > 21 || @players[0].hand.count_cards < @players[1].hand.count_cards) && @players[1].hand.count_cards < 22
       winner(@players[1])
     else
@@ -95,7 +95,7 @@ class Game
     @players[1].money += 10
     @res = 'Ничья'
   end
-  
+
   def winner(player)
     player.money += 20
     @res = "#{player.name} побеждает"
