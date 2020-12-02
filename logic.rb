@@ -13,8 +13,8 @@ class Player
     @money = 100
   end
 
-  def get_card(deck)
-    @hand.get_card(deck)
+  def get_card(deckcard)
+    @hand.get_card(deckcard)
   end
 end
 class AI < Player
@@ -42,12 +42,12 @@ class Game
   def start_game
     @deck = Deck.new
     @deck.shuffle
-
+    @player_turn = true
     @players[0].money -= 10
-    2.times { @players[0].get_card(@deck) }
+    2.times { @players[0].get_card(@deck.take_card) }
 
     @players[1].money -= 10
-    2.times { @players[1].get_card(@deck) }
+    2.times { @players[1].get_card(@deck.take_card) }
   end
 
   def skip
@@ -60,7 +60,7 @@ class Game
   end
 
   def add_card
-    @players[(@player_turn ? 0 : 1)].get_card(@deck)
+    @players[(@player_turn ? 0 : 1)].get_card(@deck.take_card)
     if @player_turn
       @player_turn = false
       @players[1].turn(self)
@@ -71,14 +71,12 @@ class Game
 
   def open_cards
     @res = ''
-    @player_turn = true
+   
     if (@players[0].hand.count_cards > 21 || @players[0].hand.count_cards < @players[1].hand.count_cards) && @players[1].hand.count_cards < 22
       winner(@players[1])
     else
       if @players[0].hand.count_cards == @players[1].hand.count_cards || @players[0].hand.count_cards > 21 && @players[1].hand.count_cards > 21
-        @players[0].money += 10
-        @players[1].money += 10
-        @res = 'Ничья'
+        tie
       else
         winner(@players[0])
       end
@@ -92,6 +90,12 @@ class Game
     end
   end
 
+  def tie
+    @players[0].money += 10
+    @players[1].money += 10
+    @res = 'Ничья'
+  end
+  
   def winner(player)
     player.money += 20
     @res = "#{player.name} побеждает"

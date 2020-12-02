@@ -8,8 +8,8 @@ class Hand
     @cards = []
   end
 
-  def get_card(deck)
-    @cards << deck.take_card
+  def get_card(deckcard)
+    @cards << deckcard
   end
 
   def too_much?
@@ -18,15 +18,11 @@ class Hand
 
   def count_cards
     cards_value = 0
-    a = 0
+    a = @cards.filter { |card| card.value == 'A' } .length
+    
     @cards.each do |card|
       if card.value =~ /[J,Q,A,K]/
-        if card.value != 'A'
           cards_value += 10
-        else
-          cards_value += 10
-          a += 1
-        end
       else
         cards_value += card.value
       end
