@@ -21,21 +21,21 @@ class Hand
     a = @cards.filter { |card| card.value == 'A' }.length
 
     @cards.each do |card|
-      cards_value += if card.value =~ /[J,Q,A,K]/
+      cards_value += if card.value =~ /[J,Q,K]/
                        10
                      else
-                       card.value
+                       if card.value == 'A'
+                         11
+                       else
+                         card.value
+                       end
                      end
     end
-    while a.positive?
-      if cards_value > 21
-        a -= 1
-        cards_value -= 10
-      else
-        a = 0
-      end
+    i = 0
+    while i < @cards.filter { |card| card.value == 'A' }.length && cards_value > 21
+      i += 1
+      cards_value -= 10
     end
-
     cards_value
   end
 end

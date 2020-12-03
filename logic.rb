@@ -71,7 +71,17 @@ class Game
 
   def open_cards
     @res = ''
+    calc_result
+    end_game
+    unless @game_over
+      @players[0].hand.cards.clear
+      @players[1].hand.cards.clear
+      start_game
+      @res
+    end
+  end
 
+  def calc_result
     if (@players[0].hand.count_cards > 21 || @players[0].hand.count_cards < @players[1].hand.count_cards) && @players[1].hand.count_cards < 22
       winner(@players[1])
     else
@@ -80,13 +90,6 @@ class Game
       else
         winner(@players[0])
       end
-    end
-    end_game
-    unless @game_over
-      @players[0].hand.cards.clear
-      @players[1].hand.cards.clear
-      start_game
-      @res
     end
   end
 
