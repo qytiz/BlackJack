@@ -18,7 +18,6 @@ class Hand
 
   def count_cards
     cards_value = 0
-    a = @cards.filter { |card| card.value == 'A' }.length
 
     @cards.each do |card|
       cards_value += if card.value =~ /[J,Q,K]/
@@ -31,10 +30,8 @@ class Hand
                        end
                      end
     end
-    i = 0
-    while i < @cards.filter { |card| card.value == 'A' }.length && cards_value > 21
-      i += 1
-      cards_value -= 10
+    @cards.filter { |card| card.value == 'A' }.each do
+      cards_value -= 10 if cards_value > 21
     end
     cards_value
   end
